@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адия моя лова</title>
+    <style>
+        body {
+            background-color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: red;
+        }
+        .buttons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        #yes {
+            background-color: green;
+            color: white;
+        }
+        #no {
+            background-color: red;
+            color: white;
+            position: absolute;
+        }
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            from { transform: translateY(-10px); }
+            to { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>Будешь моей?</h1>
+        <div class="buttons">
+            <button id="yes">Да</button>
+            <button id="no">Нет</button>
+        </div>
+    </div>
+    <div class="hearts"></div>
+    <script>
+        const noButton = document.getElementById("no");
+        const yesButton = document.getElementById("yes");
+        const container = document.getElementById("container");
+        let yesSize = 1;function moveNoButton(event) {
+        const rect = noButton.getBoundingClientRect();
+        let newX = rect.left + (Math.random() * 100 - 50);
+        let newY = rect.top + (Math.random() * 100 - 50);
+        
+        newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
+        
+        noButton.style.position = "absolute";
+        noButton.style.left = `${newX}px`;
+        noButton.style.top = `${newY}px`;
+    }
+    
+    noButton.addEventListener("mouseenter", moveNoButton);
+    noButton.addEventListener("click", () => {
+        yesSize += 0.2;
+        yesButton.style.transform = `scale(${yesSize})`;
+    });
+    
+    yesButton.addEventListener("click", () => {
+        container.innerHTML = "<h1> Ты теперь счастлива 💖</h1>";
+    });
+    
+    function createHearts() {
+        for (let i = 0; i < 20; i++) {
+            let heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            document.querySelector(".hearts").appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 5000);
+        }
+    }
+    setInterval(createHearts, 1000);
+</script>
+
+</body>
+</html>
